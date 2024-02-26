@@ -1,9 +1,13 @@
-import './App.css'
+import { createRoot } from "react-dom/client";
 
-export default function App() {
+import "./index.scss";
+
+const App = () => {
   return (
-    <main>
-      React ⚛️ + Vite ⚡ + Replit
-    </main>
-  )
-}
+    <div>
+      <h1 className="main-head">Hello React!</h1>
+    </div>
+  );
+};
+
+export default App;
