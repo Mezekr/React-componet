@@ -48,19 +48,25 @@ export const MainView = () => {
       <BookView book={selectedBook} onBackClick={() => setSelectedBook(null)} />
     );
 
-  if (books === 0) return <div>Books list is empty!</div>;
-
   return (
     <div>
-      {books.map((book) => {
-        return (
-          <BookCard
-            key={book.id}
-            book={book}
-            onBookClick={(newSelectedBook) => setSelectedBook(newSelectedBook)}
-          />
-        );
-      })}
+      {books?.length <= 0 ? (
+        <h2 className="empty">Books list is empty!</h2>
+      ) : (
+        <div className="booksContainer">
+          {books.map((book) => {
+            return (
+              <BookCard
+                key={book.id}
+                book={book}
+                onBookClick={(newSelectedBook) =>
+                  setSelectedBook(newSelectedBook)
+                }
+              />
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 };
