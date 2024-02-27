@@ -6,7 +6,7 @@ import "./index.scss";
 const App = () => {
   return (
     <div>
-      <h1 className="main-head"> Mastering Javascript Books</h1>
+      <h1 className="main-head"> Books on Mastering Javascript</h1>
       <MainView />
     </div>
   );
