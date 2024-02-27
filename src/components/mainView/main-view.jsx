@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { BookCard } from "../bookCard/BookCard";
+import { BookView } from "../book-view/book-view";
 
 export const MainView = () => {
   const [books, setBooks] = useState([
@@ -39,13 +40,26 @@ export const MainView = () => {
       author: "Robin Wieruch",
     },
   ]);
+
+  const [selectedBook, setSelectedBook] = useState(null);
+
+  if (selectedBook)
+    return (
+      <BookView book={selectedBook} onBackClick={() => setSelectedBook(null)} />
+    );
+
   if (books === 0) return <div>Books list is empty!</div>;
 
   return (
     <div>
       {books.map((book) => {
-        // return <div key={book.id}>{book.title}</div>;
-        return <BookCard key={book.id} book={book} />;
+        return (
+          <BookCard
+            key={book.id}
+            book={book}
+            onBookClick={(newSelectedBook) => setSelectedBook(newSelectedBook)}
+          />
+        );
       })}
     </div>
   );

@@ -1,6 +1,4 @@
-import { BookCard } from "../bookCard/BookCard";
-
-export const BookCard = ({ book }) => {
+export const BookView = ({ book, onBackClick }) => {
   return (
     <>
       <img src={book.image} />
@@ -12,6 +10,7 @@ export const BookCard = ({ book }) => {
         <span>Author: </span>
         <span>{book.author}</span>
       </div>
+      <button onClick={onBackClick}>Back</button>
     </>
   );
 };
