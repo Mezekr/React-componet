@@ -1,11 +1,12 @@
-export const BookCard = ({ book, onBookClick }) => {
+export const BookCard = ({ book, index, onBookClick }) => {
   return (
     <div
+      className="book-list"
       onClick={() => {
         onBookClick(book);
       }}
     >
-      {book.title}
+      {index +1}. {book.title}
     </div>
   );
 };
