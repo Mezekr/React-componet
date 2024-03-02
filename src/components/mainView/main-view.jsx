@@ -1,45 +1,32 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { BookCard } from "../bookCard/BookCard";
 import { BookView } from "../book-view/book-view";
+import searchIcon from "./../../asset/search.svg";
+
+const API_URL = "https://openlibrary.org/search.json";
 
 export const MainView = () => {
-  const [books, setBooks] = useState([
-    {
-      id: 1,
-      title: "Eloquent JavaScript",
-      image:
-        "https://images-na.ssl-images-amazon.com/images/I/51InjRPaF7L._SX377_BO1,204,203,200_.jpg",
-      author: "Marijn Haverbeke",
-    },
-    {
-      id: 2,
-      title: "Mastering JavaScript Functional Programming",
-      image:
-        "https://images-na.ssl-images-amazon.com/images/I/51WAikRq37L._SX218_BO1,204,203,200_QL40_FMwebp_.jpg",
-      author: "Federico Kereki",
-    },
-    {
-      id: 3,
-      title: "JavaScript: The Good Parts",
-      image:
-        "https://images-na.ssl-images-amazon.com/images/I/5131OWtQRaL._SX381_BO1,204,203,200_.jpg",
-      author: "Douglas Crockford",
-    },
-    {
-      id: 4,
-      title: "JavaScript: The Definitive Guide",
-      image:
-        "https://images-na.ssl-images-amazon.com/images/I/51HbNW6RzhL._SX218_BO1,204,203,200_QL40_FMwebp_.jpg",
-      author: "David Flanagan",
-    },
-    {
-      id: 5,
-      title: "The Road to React",
-      image:
-        "https://images-na.ssl-images-amazon.com/images/I/41MBLi5a4jL._SX384_BO1,204,203,200_.jpg",
-      author: "Robin Wieruch",
-    },
-  ]);
+  const [books, setBooks] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const searchBook = async (title) => {
+    const response = await fetch(`${API_URL}?q=${title}`);
+    const data = await response.json();
+    // console.log(data.docs);
+    const booksFromApi = data.docs.map((doc) => {
+      return {
+        id: doc.key,
+        title: doc.title,
+        image: `https://covers.openlibrary.org/b/id/${doc.cover_i}-L.jpg`,
+        author: doc.author_name?.[0],
+      };
+    });
+    setBooks(booksFromApi);
+  };
+
+  useEffect(() => {
+    searchBook(searchTerm);
+  }, []);
 
   const [selectedBook, setSelectedBook] = useState(null);
 
@@ -47,26 +34,49 @@ export const MainView = () => {
     return (
       <BookView book={selectedBook} onBackClick={() => setSelectedBook(null)} />
     );
-
   return (
-    <div>
-      {books?.length <= 0 ? (
-        <h2 className="empty">Books list is empty!</h2>
-      ) : (
-        <div className="booksContainer">
-          {books.map((book) => {
-            return (
-              <BookCard
-                key={book.id}
-                book={book}
-                onBookClick={(newSelectedBook) =>
-                  setSelectedBook(newSelectedBook)
-                }
-              />
-            );
-          })}
-        </div>
-      )}
-    </div>
+    <>
+      <div className="search">
+        <input
+          type="text"
+          placeholder="Search a book"
+          value={searchTerm}
+          onChange={(e) => {
+            setSearchTerm(e.target.value);
+          }}
+        ></input>
+        <img
+          src={searchIcon}
+          alt="search"
+          onClick={() => {
+            searchBook(searchTerm);
+          }}
+        />
+      </div>
+      <div>
+        {books?.length <= 0 && searchTerm !== "" ? (
+          <div className="empty">
+            <h2>Books list is empty!</h2>
+          </div>
+        ) : (
+          <div className="books-container">
+            {books.map((book, index) => {
+              return (
+                <BookCard
+                  key={book.id}
+                  book={book}
+                  index={index}
+                  onBookClick={(newSelectedBook) =>
+                    setSelectedBook(newSelectedBook)
+                  }
+                />
+              );
+            })}
+          </div>
+        )}
+      </div>
+      );
+    </>
   );
 };
+export default MainView;
