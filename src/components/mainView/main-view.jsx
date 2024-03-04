@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { BookCard } from "../bookCard/BookCard";
 import { BookView } from "../book-view/book-view";
 import searchIcon from "./../../asset/search.svg";
+import LoginView from "../loging-view/loging-view";
+import SignView from "../signup-view/signup-view";
 
 const API_URL = "https://openlibrary.org/search.json";
 
@@ -53,10 +55,13 @@ export const MainView = () => {
           }}
         />
       </div>
+      <LoginView />
+      <br></br>
+      <SignView/>
       <div>
         {books?.length <= 0 && searchTerm !== "" ? (
           <div className="empty">
-            <h2>Books list is empty!</h2>
+            <h2>loading..!</h2>
           </div>
         ) : (
           <div className="books-container">

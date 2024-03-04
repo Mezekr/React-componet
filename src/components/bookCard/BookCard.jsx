@@ -6,7 +6,7 @@ export const BookCard = ({ book, index, onBookClick }) => {
         onBookClick(book);
       }}
     >
-      {index +1}. {book.title}
+      {index + 1}. {book.title}
     </div>
   );
 };
