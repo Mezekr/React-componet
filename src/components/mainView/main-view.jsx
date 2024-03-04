@@ -10,6 +10,8 @@ const API_URL = "https://openlibrary.org/search.json";
 export const MainView = () => {
   const [books, setBooks] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedBook, setSelectedBook] = useState(null);
+  const [user, setUser] = useState(null);
 
   const searchBook = async (title) => {
     const response = await fetch(`${API_URL}?q=${title}`);
@@ -30,7 +32,7 @@ export const MainView = () => {
     searchBook(searchTerm);
   }, []);
 
-  const [selectedBook, setSelectedBook] = useState(null);
+  if (!user) return <LoginView onLogin={(user) => setUser(user)} />;
 
   if (selectedBook)
     return (
@@ -55,9 +57,7 @@ export const MainView = () => {
           }}
         />
       </div>
-      <LoginView />
-      <br></br>
-      <SignView/>
+      <SignView />
       <div>
         {books?.length <= 0 && searchTerm !== "" ? (
           <div className="empty">
