@@ -80,7 +80,7 @@ export const MainView = () => {
           </div>
         )}
       </div>
-      );
+      <button onClick={() => setUser(null)}>Logout</button>
     </>
   );
 };
